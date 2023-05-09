@@ -27,45 +27,26 @@ Per visualizzare il database chinook.db direttamente da Visual Studio Code insta
 
 Chinook.db è un esempio di database relazionale utilizzato in diversi tutorial e documentazione per illustrare concetti di database. Contiene dati relativi a un'immaginaria azienda musicale chiamata Chinook, come ad esempio informazioni sugli artisti, gli album e i brani musicali. Puoi trovare ulteriori informazioni su Chinook.db sul sito web di SQLite: https://www.sqlite.org/samples/chinook.html
 
-<b>CODICE C# PER VISUALIZZARE GLI ARTISTI IN ORDINE DI ArtistId E Name UTULIZZANDO IL LINGUAGGIO LINQ</b>
+<b>CODICE C# </b>
 
-using System.Linq;
-using SQLite;
 
-namespace LinqDb
+- Riga di codice che ci permette di accedere alla libreria:
 
-{
+###
+SQLiteConnection cn1 = new SQLiteConnection("chinook.db");
+###
 
-    class Program
-    
-    {
-    
-        static void Main(string[] args)
-        
-        {
-        
-            using (var db = new SQLiteConnection("Chinook.db"))
-            {
-                var artists = from artist in db.Table<Artist>()
-                              orderby artist.ArtistId, artist.Name
-                              select artist;
+- Riga di codice per selezionare l'informazione voluta dal DB:
 
-                foreach (var artist in artists)
-                {
-                    // Visualizza l'artista
-                }
-            }
-        }
-    }
+###
+var tblArtist = cn1.Query<Artist>("select * from artists");
+###
 
-    public class Artist
-    {
-        [PrimaryKey]
-        public int ArtistId { get; set; }
-        public string Name { get; set; }
-    }
-}
+- Riga di codice per ordinare gli ID degli artisti:
 
+###
+var temporanea = tblArtist.OrderByDescending(x => x.Name).Max( y => y.ArtistId );
+###
 
 Tabella artists di chinook.db:
 
